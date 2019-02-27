@@ -6,15 +6,15 @@
 #include "discretize.hpp"
 
 /**
- * A quantile provider using histograms to find an approximate quantile. This 
- * assumes that all values are in the range [0,1].
+ * A histogram provider that assumes that all values are in the range [0,1].
+ * Allows upstream manipulation based on other edge scores.
  */
-template <typename RegionGraphType, int Q, int K, typename Precision, int Bins = 256, bool InitWithMax = true>
-class SkipKQuantileProvider : public StatisticsProvider {
+template <typename RegionGraphType, typename Precision, int Bins = 256, bool InitWithMax = true>
+class HistogramProvider : public StatisticsProvider {
 
 public:
 
-	typedef Precision ValueType;
+	typedef Histogram<Bins> ValueType;
 	typedef typename RegionGraphType::EdgeIdType EdgeIdType;
 
 	HistogramQuantileProvider(RegionGraphType& regionGraph) :
@@ -44,21 +44,7 @@ public:
 	}
 
 	inline ValueType operator[](EdgeIdType e) const {
-
-		// pivot element, 1-based index
-		int pivot = Q*(_histograms[e].sum() - K)/100 + 1;
-
-		int sum = 0;
-		int bin = 0;
-		for (bin = 0; bin < Bins; bin++) {
-
-			sum += _histograms[e][bin];
-
-			if (sum >= pivot)
-				break;
-		}
-
-		return undiscretize<Precision>(bin, Bins);
+		return _histograms[e];
 	}
 
 private:
