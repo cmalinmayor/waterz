@@ -85,6 +85,9 @@ struct square {
 template <typename T>
 using Square = UnaryOperator<T, square>;
 
+template <typename T>
+using SquareRoot = UnaryOperator<T, std::sqrt>;
+
 template <typename T1, typename T2>
 using Add = BinaryOperator<T1, T2, std::plus>;
 
