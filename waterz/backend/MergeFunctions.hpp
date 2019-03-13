@@ -116,6 +116,9 @@ using HistogramQuantileAffinity = EdgeStatisticValue<RegionGraphType, HistogramQ
 template <typename RegionGraphType, int Quantile, typename Precision, bool InitWithMax = true>
 using QuantileAffinity = EdgeStatisticValue<RegionGraphType, VectorQuantileProvider<RegionGraphType, Quantile, Precision, InitWithMax>>;
 
+template <typename RegionGraphType, typename Precision, bool InitWithMax = true>
+using Histogram = EdgeStatisticValue<RegionGraphType, HistogramProvider<RegionGraphType, Precision, InitWithMax>>
+
 /**
  * Scores edges with the mean of the max k affinities.
  */
