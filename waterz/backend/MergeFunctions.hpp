@@ -26,11 +26,10 @@ public:
 	typedef typename StatisticsProviderType::ValueType ScoreType;
 
 	Constant(
-			RegionGraphType&,
-			const StatisticsProviderType& constantProvider) :
-		_constantProvider(constantProvider) {}
+			RegionGraphType& regionGraph) :
+		_constantProvider(ConstantProvider<C>(regionGraph)) {}
 
-	inline ScoreType operator()(EdgeIdType e) {
+	inline ScoreType operator()(EdgeIdType e) const {
 
 		return _constantProvider();
 	}
